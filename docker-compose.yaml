@@ -1,0 +1,31 @@
+services:
+  lake-db:
+    image: postgres:16
+    container_name: lake-db
+    environment:
+      - POSTGRES_USER=${LAKE_DB_USER}           # Custom user for Lake DB
+      - POSTGRES_PASSWORD=${LAKE_DB_PASSWORD}   # Custom password for Lake DB
+      - POSTGRES_DB=${LAKE_DB_NAME}             # Lake DB name
+    ports:
+      - "${LAKE_DB_PORT}:${POSTGRES_PORT}"  # Expose Lake DB on the server
+    volumes:
+      - lake-db-data:/var/lib/postgresql/data
+    restart: on-failure
+
+  warehouse-db:
+    image: postgres:16
+    container_name: warehouse-db
+    environment:
+      - POSTGRES_USER=${WAREHOUSE_DB_USER}     # Custom user for Warehouse DB
+      - POSTGRES_PASSWORD=${WAREHOUSE_DB_PASSWORD}  # Custom password for Warehouse DB
+      - POSTGRES_DB=${WAREHOUSE_DB_NAME}       # Warehouse DB name
+    ports:
+      - "${WAREHOUSE_DB_PORT}:${POSTGRES_PORT}"  # Expose Warehouse DB on the server
+    volumes:
+      - warehouse-db-data:/var/lib/postgresql/data
+    restart: on-failure
+
+
+volumes:
+  lake-db-data:
+  warehouse-db-data:
